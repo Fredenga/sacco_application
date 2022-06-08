@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PlusIcon, CardStackIcon, UploadIcon } from "@radix-ui/react-icons";
 import {
   AppShell,
   Navbar,
@@ -24,11 +25,16 @@ export default function Dashboard() {
 
   const AppContainer = styled.div``;
   const TopContainer = styled.div``;
+  const IconContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+  `;
   const CreditContainer = styled.div`
     display: flex;
     justify-content: space-between;
     padding-inline: 10px;
     margin-bottom: 20px;
+    padding: 20px;
     &:hover {
       border: 1px solid lightgrey;
       border-radius: 20px;
@@ -109,10 +115,27 @@ export default function Dashboard() {
             <Container>
               <Text mb={6}>Quick Actions</Text>
               <Grid grow>
-                <Grid.Col span={4}>1</Grid.Col>
-                <Grid.Col span={4}>2</Grid.Col>
-                <Grid.Col span={4}>3</Grid.Col>
-                <Grid.Col span={4}>4</Grid.Col>
+                <Grid.Col span={4}>
+                  <IconContainer>
+                    <PlusIcon />
+                    <Text>Top up</Text>
+                  </IconContainer>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <IconContainer>
+                    <CardStackIcon />
+                    <Text>Pay</Text>
+                  </IconContainer>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <IconContainer>
+                    <UploadIcon />
+                    <Text>Loans</Text>
+                  </IconContainer>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <IconContainer></IconContainer>
+                </Grid.Col>
               </Grid>
             </Container>
             <Container>

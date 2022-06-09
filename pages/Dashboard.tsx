@@ -89,7 +89,7 @@ export default function Dashboard() {
         >
           <Navbar.Section>
             <Paper shadow="md" radius="xs" p="lg">
-              <Title>esacco</Title>
+              <Title color="green">esacco</Title>
               <Text>hi, George</Text>
             </Paper>
           </Navbar.Section>
@@ -187,7 +187,11 @@ export default function Dashboard() {
         <TopContainer>
           <UpContainer>
             <Text>Savings: 927392</Text>
-            <Button variant="outline" color="teal">
+            <Button
+              variant="gradient"
+              gradient={{ from: "teal", to: "lime", deg: 105 }}
+            >
+              {" "}
               View All
             </Button>
           </UpContainer>
@@ -196,7 +200,7 @@ export default function Dashboard() {
               <Paper key={bc}>
                 <Text>default</Text>
                 <Text>7070</Text>
-                <Progress color="cyan" radius="lg" value={50} />
+                <Progress label="50%" size="md" color="green" value={50} />
               </Paper>
             ))}
           </UpContainer>
@@ -204,7 +208,11 @@ export default function Dashboard() {
         <TopContainer>
           <UpContainer>
             <Text>Loans: 927392</Text>
-            <Button variant="outline" color="teal">
+            <Button
+              variant="gradient"
+              gradient={{ from: "teal", to: "lime", deg: 105 }}
+            >
+              {" "}
               View All
             </Button>
           </UpContainer>
@@ -213,13 +221,17 @@ export default function Dashboard() {
               <Paper key={bc}>
                 <Text>default</Text>
                 <Text>7070</Text>
-                <Progress color="cyan" radius="lg" value={50} />
+                <Progress label="50%" size="md" color="green" value={50} />
               </Paper>
             ))}
           </UpContainer>
           <UpContainer>
             <Text>transactions</Text>
-            <Button variant="outline" color="teal">
+            <Button
+              variant="gradient"
+              gradient={{ from: "teal", to: "lime", deg: 105 }}
+            >
+              {" "}
               view all
             </Button>
           </UpContainer>

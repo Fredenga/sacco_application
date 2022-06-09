@@ -16,10 +16,13 @@ import {
   Container,
   Grid,
   Button,
+  Stack,
+  Center,
 } from "@mantine/core";
 import styled from "styled-components";
-
+import { NextLink } from "@mantine/next";
 export default function Dashboard() {
+  console.log("first");
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
@@ -95,10 +98,12 @@ export default function Dashboard() {
           </Navbar.Section>
           <Navbar.Section>
             <Paper shadow="md" radius="xs" p="lg">
-              <Text>home</Text>
-              <Text>loans</Text>
-              <Text>savings</Text>
-              <Text>transactions</Text>
+              <Stack>
+                <NextLink href="/home">home</NextLink>
+                <NextLink href="/loans">loans</NextLink>
+                <NextLink href="/savings">savings</NextLink>
+                <NextLink href="/transactions">transactions</NextLink>
+              </Stack>
             </Paper>
           </Navbar.Section>
           <Navbar.Section>
@@ -177,8 +182,9 @@ export default function Dashboard() {
                 mr="xl"
               />
             </MediaQuery>
-
-            <Text>Dashboard</Text>
+            <Center>
+              <Text>Dashboard</Text>
+            </Center>
           </div>
         </Header>
       }

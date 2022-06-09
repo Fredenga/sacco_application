@@ -12,7 +12,6 @@ import {
   Aside,
   Paper,
 } from "@mantine/core";
-import styled from "styled-components";
 
 export default function savings() {
   return (

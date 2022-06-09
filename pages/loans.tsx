@@ -12,7 +12,6 @@ import {
   Aside,
   Paper,
 } from "@mantine/core";
-import styled from "styled-components";
 
 export default function loans() {
   return (
@@ -68,9 +67,11 @@ export default function loans() {
         </Center>
       </Container>
       <Container>
-        <Text my={10} size="xl" color="green">
-          Current Loans
-        </Text>
+        <Center>
+          <Text my={10} size="xl" color="green">
+            Current Loans
+          </Text>
+        </Center>
         <Grid grow>
           <Grid.Col span={4}>
             <Paper shadow="xl" radius="md" p="lg">

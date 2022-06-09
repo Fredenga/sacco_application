@@ -113,6 +113,11 @@ export default function transactions() {
             </Group>
           </Paper>
         </Stack>
+        <Center>
+          <Button variant="light" color="green" mt={30} fullWidth>
+            Load More
+          </Button>
+        </Center>
       </Container>
     </AppShell>
   );

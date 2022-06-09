@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlusIcon, CardStackIcon, UploadIcon } from "@radix-ui/react-icons";
+import { PlusIcon, TokensIcon } from "@radix-ui/react-icons";
 import {
   AppShell,
   Navbar,
@@ -11,39 +11,20 @@ import {
   Burger,
   useMantineTheme,
   Paper,
-  Title,
   Progress,
   Container,
-  Grid,
   Button,
   Stack,
   Center,
+  Group,
 } from "@mantine/core";
 import styled from "styled-components";
 import { NextLink } from "@mantine/next";
 export default function Dashboard() {
-  console.log("first");
+  console.log("hello world");
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
-  const AppContainer = styled.div``;
-  const TopContainer = styled.div``;
-  const IconContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
-  const CreditContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding-inline: 10px;
-    margin-bottom: 20px;
-    padding: 20px;
-    &:hover {
-      border: 1px solid lightgrey;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-  `;
   const UpContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -61,9 +42,7 @@ export default function Dashboard() {
       margin-bottom: 20px;
     }
   `;
-  const SubTitle = styled.h3`
-    font-weight: lighter;
-  `;
+
   const abc = [1, 2, 3];
   return (
     <AppShell
@@ -92,7 +71,9 @@ export default function Dashboard() {
         >
           <Navbar.Section>
             <Paper shadow="md" radius="xs" p="lg">
-              <Title color="green">esacco</Title>
+              <Text color="green" size="xl">
+                Essaco
+              </Text>
               <Text>hi, George</Text>
             </Paper>
           </Navbar.Section>
@@ -119,44 +100,35 @@ export default function Dashboard() {
           <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
             <Container>
               <Text mb={6}>Quick Actions</Text>
-              <Grid grow>
-                <Grid.Col span={4}>
-                  <IconContainer>
-                    <PlusIcon />
-                    <Text>Top up</Text>
-                  </IconContainer>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <IconContainer>
-                    <CardStackIcon />
-                    <Text>Pay</Text>
-                  </IconContainer>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <IconContainer>
-                    <UploadIcon />
-                    <Text>Loans</Text>
-                  </IconContainer>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <IconContainer></IconContainer>
-                </Grid.Col>
-              </Grid>
+              <Stack>
+                <Button color="green" variant="light" leftIcon={<PlusIcon />}>
+                  Top Up
+                </Button>
+                <Button color="green" variant="light" leftIcon={<PlusIcon />}>
+                  Add Payment
+                </Button>
+                <Button color="green" variant="light" leftIcon={<PlusIcon />}>
+                  Add Savings
+                </Button>
+                <Button color="green" variant="light" leftIcon={<PlusIcon />}>
+                  Apply Loan
+                </Button>
+              </Stack>
             </Container>
             <Container>
-              <SubTitle>sacco statistics</SubTitle>
+              <Text weight="lighter">sacco statistics</Text>
             </Container>
             <Container>
               <SideApp>
-                <SubTitle>Total Savings</SubTitle>
+                <Text weight="lighter">Total Savings</Text>
                 <Text>397927323</Text>
               </SideApp>
               <SideApp>
-                <SubTitle>Total Loans</SubTitle>
+                <Text weight="lighter">Total Loans</Text>
                 <Text>992927320320</Text>
               </SideApp>
               <SideApp>
-                <SubTitle>Total Members</SubTitle>
+                <Text weight="lighter">Total Members</Text>
                 <Text>79</Text>
               </SideApp>
             </Container>
@@ -189,8 +161,8 @@ export default function Dashboard() {
         </Header>
       }
     >
-      <AppContainer>
-        <TopContainer>
+      <Container>
+        <Container>
           <UpContainer>
             <Text>Savings: 927392</Text>
             <Button
@@ -210,8 +182,8 @@ export default function Dashboard() {
               </Paper>
             ))}
           </UpContainer>
-        </TopContainer>
-        <TopContainer>
+        </Container>
+        <Container>
           <UpContainer>
             <Text>Loans: 927392</Text>
             <Button
@@ -242,15 +214,19 @@ export default function Dashboard() {
             </Button>
           </UpContainer>
           {abc.map((bc) => (
-            <CreditContainer key={bc}>
-              <Text>Deposit</Text>
-              <Text>In</Text>
-              <Text>4500</Text>
-              <Text>23:34:01/20/2022</Text>
-            </CreditContainer>
+            <Stack key={bc}>
+              <Paper shadow="xl" radius="md" p="sm">
+                <Group position="apart">
+                  <Text>Deposit</Text>
+                  <Text>In</Text>
+                  <Text>45000</Text>
+                  <Text>23:34:01/20/2022</Text>
+                </Group>
+              </Paper>
+            </Stack>
           ))}
-        </TopContainer>
-      </AppContainer>
+        </Container>
+      </Container>
     </AppShell>
   );
 }

@@ -20,8 +20,14 @@ import {
 } from "@mantine/core";
 import styled from "styled-components";
 import { NextLink } from "@mantine/next";
+import Section, { Profile } from "../components/Section";
+export const ThisText: Profile = {
+  text: "Profile",
+  followUp: "Log Out",
+  owner: "Hi Satin",
+};
 export default function Dashboard() {
-  console.log("hello world");
+  console.log("hello");
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
@@ -69,36 +75,13 @@ export default function Dashboard() {
             justifyContent: "space-around",
           }}
         >
-          <Navbar.Section>
-            <Paper shadow="md" radius="xs" p="lg">
-              <Text color="green" size="xl">
-                Essaco
-              </Text>
-              <Text>hi, George</Text>
-            </Paper>
-          </Navbar.Section>
-          <Navbar.Section>
-            <Paper shadow="md" radius="xs" p="lg">
-              <Stack>
-                <NextLink href="/home">home</NextLink>
-                <NextLink href="/loans">loans</NextLink>
-                <NextLink href="/savings">savings</NextLink>
-                <NextLink href="/transactions">transactions</NextLink>
-              </Stack>
-            </Paper>
-          </Navbar.Section>
-          <Navbar.Section>
-            <Paper shadow="md" radius="xs" p="lg">
-              <Text>profile</Text>
-              <Text>logout</Text>
-            </Paper>
-          </Navbar.Section>
+          <Section {...ThisText} />
         </Navbar>
       }
       aside={
         <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
           <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-            <Container>
+            <Container mb={10}>
               <Text mb={6}>Quick Actions</Text>
               <Stack>
                 <Button color="green" variant="light" leftIcon={<PlusIcon />}>
@@ -116,22 +99,26 @@ export default function Dashboard() {
               </Stack>
             </Container>
             <Container>
-              <Text weight="lighter">sacco statistics</Text>
+              <Text underline weight="normal" my={6}>
+                Sacco Statistics
+              </Text>
             </Container>
-            <Container>
-              <SideApp>
-                <Text weight="lighter">Total Savings</Text>
-                <Text>397927323</Text>
-              </SideApp>
-              <SideApp>
-                <Text weight="lighter">Total Loans</Text>
-                <Text>992927320320</Text>
-              </SideApp>
-              <SideApp>
-                <Text weight="lighter">Total Members</Text>
-                <Text>79</Text>
-              </SideApp>
-            </Container>
+            <Center>
+              <Stack>
+                <SideApp>
+                  <Text weight="lighter">Total Savings</Text>
+                  <Text>397927323</Text>
+                </SideApp>
+                <SideApp>
+                  <Text weight="lighter">Total Loans</Text>
+                  <Text>992927320320</Text>
+                </SideApp>
+                <SideApp>
+                  <Text weight="lighter">Total Members</Text>
+                  <Text>79</Text>
+                </SideApp>
+              </Stack>
+            </Center>
           </Aside>
         </MediaQuery>
       }
@@ -140,35 +127,12 @@ export default function Dashboard() {
           Application footer
         </Footer>
       }
-      header={
-        <Header height={70} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-            <Center>
-              <Text>Dashboard</Text>
-            </Center>
-          </div>
-        </Header>
-      }
     >
       <Container>
         <Container>
           <UpContainer>
             <Text>Savings: 927392</Text>
-            <Button
-              variant="gradient"
-              gradient={{ from: "teal", to: "lime", deg: 105 }}
-            >
+            <Button variant="light" color="teal">
               {" "}
               View All
             </Button>
@@ -186,10 +150,7 @@ export default function Dashboard() {
         <Container>
           <UpContainer>
             <Text>Loans: 927392</Text>
-            <Button
-              variant="gradient"
-              gradient={{ from: "teal", to: "lime", deg: 105 }}
-            >
+            <Button variant="light" color="teal">
               {" "}
               View All
             </Button>
@@ -205,10 +166,7 @@ export default function Dashboard() {
           </UpContainer>
           <UpContainer>
             <Text>transactions</Text>
-            <Button
-              variant="gradient"
-              gradient={{ from: "teal", to: "lime", deg: 105 }}
-            >
+            <Button variant="light" color="teal">
               {" "}
               view all
             </Button>

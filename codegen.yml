@@ -1,0 +1,8 @@
+overwrite: true
+schema: "https://sacco.up.railway.app/graphql"
+generates:
+  ./graphql/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

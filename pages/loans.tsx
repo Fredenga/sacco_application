@@ -17,53 +17,63 @@ import {
   TextInput,
   Space,
 } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Outcome } from "../components/Notifications";
 import Section from "../components/Section";
+import { getAllLoansByUserId_getAllLoansByUserId_loans } from "../src/graphql/loans/__generated__/getAllLoansByUserId";
+import { getAllLoanTypes_getAllLoanTypes } from "../src/graphql/loans/__generated__/getAllLoanTypes";
+import loansService from "../src/graphql/services/loansService";
+import { RootState } from "../state/store";
 import { ThisText } from "./Dashboard";
 
 export default function Loans() {
+  const [loans, setLoans] = useState<getAllLoanTypes_getAllLoanTypes[]>([]);
+  const userId = useSelector((state: RootState) => state.user.user._id);
+
+  const [userLoans, setUserLoans] = useState<
+    getAllLoansByUserId_getAllLoansByUserId_loans[]
+  >([]);
+  useEffect(() => {
+    const fetchLoans = async () => {
+      const data = await loansService.getAllLoanTypes();
+      const res = await loansService.getAllLoansByUserId(userId);
+      res && setUserLoans(res.getAllLoansByUserId.loans);
+      setLoans(data.getAllLoanTypes);
+    };
+    fetchLoans();
+  }, [loans, userId]);
+
   const [opened, setOpened] = useState(false);
+  const [guarantor, setGuarantor] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState<number>(0);
+  const [guarantorAmount, setGuarantorAmount] = useState<number>(0);
   const [loanType, setLoanType] = useState("");
-  const [option, setOption] = useState("");
-
-  console.log(amount);
-  const savings = 100000;
-  const max = 0.9 * savings;
-  const handleAmount = () => {
-    if (savings > 1000) {
-      return ` Maximum loan amount is KSH${max}`;
+  const loan = loans.find((loan) => loan.name === loanType);
+  const calculateAmountToPay = () => {
+    if (loan) {
+      return amount * (loan?.interestRate / 100) * loan.repayPeriod + amount;
     }
-    return "";
+    return null;
   };
-
-  const checkLoanType = (loanType: string) => {
-    switch (loanType) {
-      case "Car Loan" || "Emergency Loan":
-        setOption("amount");
-        break;
-      case "Student Loan" || "Mortgage Loan":
-        setOption("guarantor");
-      default:
-        break;
+  const beAGuarantor = async () => {
+    setLoading(true);
+    const res = await loansService.createGuarantor({
+      userId,
+      amount: guarantorAmount,
+    });
+    console.log(res.data);
+    if (res.status) {
+      console.log(res);
+    } else {
+      Outcome("Application Unsuccessful", `${res.error}`, "red");
     }
-    console.log(loanType);
-    console.log(option);
+    setLoading(false);
+    setGuarantor(false);
   };
-  function Render() {
-    if (option == "amount") {
-      return <Text color="green">{handleAmount()}</Text>;
-    } else if (option == "guarantor") {
-      return (
-        <TextInput
-          label="Token"
-          placeholder="Paste your guarantor's Token"
-          required
-        />
-      );
-    }
-    return <></>;
-  }
+  // const loanAmounts = userLoans.length > 0 && userLoans.map(userLoan => userLoan.amount)
+
   return (
     <AppShell
       padding="md"
@@ -72,7 +82,7 @@ export default function Loans() {
           <Navbar
             p="md"
             hiddenBreakpoint="sm"
-            // hidden={!opened}
+            hidden={!opened}
             width={{ sm: 200, lg: 300 }}
           >
             <Section {...ThisText} />
@@ -89,6 +99,29 @@ export default function Loans() {
       })}
     >
       <Modal
+        opened={guarantor}
+        onClose={() => setGuarantor(false)}
+        title="Be a Guarantor"
+        centered
+      >
+        <Stack>
+          <TextInput
+            label="Amount"
+            placeholder="Amount (KSH)"
+            required
+            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
+          />
+          <Button
+            loading={loading}
+            onClick={beAGuarantor}
+            variant="light"
+            color="green"
+          >
+            Apply for Guarantorship
+          </Button>
+        </Stack>
+      </Modal>
+      <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Loan Application"
@@ -98,15 +131,12 @@ export default function Loans() {
           <Select
             label="Loan Type"
             placeholder="Pick one"
-            data={[
-              { value: "Car Loan", label: "Car Loan" },
-              { value: "Emergency Loan", label: "Emergency Loan" },
-              { value: "Student Loan", label: "Student Loan" },
-              { value: "Mortgage Loan", label: "Mortgage Loan" },
-            ]}
+            data={loans.map((myLoan) => ({
+              value: myLoan.name,
+              label: myLoan.name,
+            }))}
             onChange={(value) => {
               setLoanType(value || "");
-              checkLoanType(loanType);
             }}
           />
           <TextInput
@@ -115,10 +145,16 @@ export default function Loans() {
             required
             onChange={(e) => setAmount(parseInt(e.target.value))}
           />
-          <Render />
-          <Text>Interest Rate: 3%</Text>
-          <Text>Amount to Pay: KSH94,500</Text>
-          <Text>Due Date: 24/7/2022</Text>
+          {/* <Render /> */}
+          <TextInput
+            label="Token"
+            placeholder="Paste your guarantor's Token"
+            required
+          />
+          <Text>Interest Rate: {loan?.interestRate}%</Text>
+
+          <Text>Amount to Pay: {calculateAmountToPay()}</Text>
+          <Text>Due Date: {loan?.repayPeriod} months</Text>
           <Button variant="light" color="green">
             Apply Loan
           </Button>
@@ -144,7 +180,11 @@ export default function Loans() {
             </Button>
           </Container>
           <Container>
-            <Button variant="light" color="teal">
+            <Button
+              onClick={() => setGuarantor(true)}
+              variant="light"
+              color="teal"
+            >
               Be A Guarantor
             </Button>
           </Container>
@@ -156,68 +196,37 @@ export default function Loans() {
             Current Loans
           </Text>
         </Center>
-        <Grid grow>
-          <Grid.Col span={4}>
-            <Paper shadow="xl" radius="md" p="lg">
-              <Text color="teal" size="lg">
-                Car Loan
-              </Text>
-              <Text>Principle: Ksh 4000</Text>
-              <Text>Interest Rate: 3%</Text>
-              <Text>Amount: Ksh 4300</Text>
-              <Text>Amount Paid: Ksh 2150</Text>
-              <Progress label="50%" size="md" color="green" value={50} />
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Paper shadow="xl" radius="md" p="lg">
-              <Text color="teal" size="lg">
-                Credit Builder Loan
-              </Text>
-              <Text>Principle: Ksh 4000</Text>
-              <Text>Interest Rate: 3%</Text>
-              <Text>Amount: Ksh 4300</Text>
-              <Text>Amount Paid: Ksh 2150</Text>
-              <Progress label="50%" size="md" color="green" value={50} />
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Paper shadow="xl" radius="md" p="lg">
-              <Text color="teal" size="lg">
-                Student Loan
-              </Text>
-              <Text>Principle: Ksh 4000</Text>
-              <Text>Interest Rate: 3%</Text>
-              <Text>Amount: Ksh 4300</Text>
-              <Text>Amount Paid: Ksh 2150</Text>
-              <Progress label="50%" size="md" color="green" value={50} />
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Paper shadow="xl" radius="md" p="lg">
-              <Text color="teal" size="lg">
-                Mortgage Loan
-              </Text>
-              <Text>Principle: Ksh 4000</Text>
-              <Text>Interest Rate: 3%</Text>
-              <Text>Amount: Ksh 4300</Text>
-              <Text>Amount Paid: Ksh 2150</Text>
-              <Progress label="50%" size="md" color="green" value={50} />
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Paper shadow="xl" radius="md" p="lg">
-              <Text color="teal" size="lg">
-                Payday Loan
-              </Text>
-              <Text>Principle: Ksh 4000</Text>
-              <Text>Interest Rate: 3%</Text>
-              <Text>Amount: Ksh 4300</Text>
-              <Text>Amount Paid: Ksh 2150</Text>
-              <Progress label="50%" size="md" color="green" value={50} />
-            </Paper>
-          </Grid.Col>
-        </Grid>
+        {userLoans.length > 0 ? (
+          <Grid grow>
+            {userLoans.map((userLoan) => {
+              const progress = (userLoan.amountPaid / userLoan.amount) * 100;
+              return (
+                <Grid.Col key={userLoan._id} span={4}>
+                  <Paper shadow="xl" radius="md" p="lg">
+                    <Text color="teal" size="lg">
+                      Car Loan
+                    </Text>
+                    <Text>Amount: Ksh {userLoan.amount}</Text>
+                    <Text>Amount Paid: Ksh {userLoan.amountPaid}</Text>
+                    <Text>
+                      Amount Remaining: Ksh {userLoan.amountRemaining}
+                    </Text>
+                    <Progress
+                      label={`progress%`}
+                      size="md"
+                      color="green"
+                      value={progress}
+                    />
+                  </Paper>
+                </Grid.Col>
+              );
+            })}
+          </Grid>
+        ) : (
+          <Center>
+            <Text color="gray">Nothing here yet</Text>
+          </Center>
+        )}
       </Container>
     </AppShell>
   );

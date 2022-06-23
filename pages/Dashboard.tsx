@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlusIcon, TokensIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
   AppShell,
   Navbar,

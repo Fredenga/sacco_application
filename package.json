@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "schema:download": "npx apollo client:download-schema --endpoint=https://sacco.up.railway.app/graphql ./src/graphql/graphql-schema.json",
+    "schema:generate-watch": "npx apollo codegen:generate --localSchemaFile=./src/graphql/graphql-schema.json --target=typescript --tagName=gql"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.8",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
@@ -24,11 +27,14 @@
     "@mantine/rte": "^4.2.6",
     "@mantine/spotlight": "^4.2.6",
     "@radix-ui/react-icons": "^1.1.1",
+    "@reduxjs/toolkit": "^1.8.2",
     "dayjs": "^1.11.2",
     "font-awesome": "^4.7.0",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-redux": "^8.0.2",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
@@ -36,6 +42,7 @@
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
     "@types/react-fontawesome": "^1.6.5",
+    "@types/react-redux": "^7.1.24",
     "@types/styled-components": "^5.1.25",
     "eslint": "8.16.0",
     "eslint-config-next": "12.1.6",

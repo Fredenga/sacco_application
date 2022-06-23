@@ -11,10 +11,24 @@ import {
   Paper,
   Stack,
 } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Section from "../components/Section";
+import transactionsService from "../src/graphql/services/transactionsService";
+import { RootState } from "../state/store";
 import { ThisText } from "./Dashboard";
 
-export default function transactions() {
+export default function Transactions() {
+  const userId = useSelector((state: RootState) => state.user.user._id);
+  const [balance, setBalance] = useState<number>();
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const data = await transactionsService.getEscrow(userId);
+      data && setBalance(data.getEscrow.amount);
+    };
+    fetchTransactions();
+  }, [userId]);
   return (
     <AppShell
       padding="md"
@@ -47,7 +61,7 @@ export default function transactions() {
       <Container>
         <Center>
           <Text color="green" my={25}>
-            Escrow Balance: Ksh 600,000
+            Escrow Balance: Ksh {balance}
           </Text>
         </Center>
         <Center>

@@ -10,6 +10,7 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content:space-between;
 `;
 
 const Navbar = styled.div`

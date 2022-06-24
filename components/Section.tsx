@@ -35,36 +35,7 @@ const Sectionn = styled.div`
 
 const Section: React.FC = () => {
   const user = useSelector((state: any) => state.user);
-  const [opened, setOpened] = useState<boolean>(false);
-  const [email, setemail] = useState<string>("");
-  const [password, setpassword] = useState<string>("");
-  const dispatch = useDispatch();
-
-  const [loading, SetLoading] = useState<boolean>(false);
-  const handleClick = () => {};
-  const handleSubmit = async () => {
-    SetLoading(true);
-    try {
-      const { login } = await userService.login({ email, password });
-      login && localStorage.setItem("token", login.accessToken);
-      console.log(login);
-      dispatch(loginUser(login));
-      Outcome(
-        "Login Successfull",
-        `Welcome back, ${login.user.firstName}!`,
-        "green"
-      );
-    } catch (error) {
-      Outcome("Login Not Successfull", "Please try again", "red");
-
-      console.log({
-        message: "failed",
-        error,
-      });
-    }
-    SetLoading(false);
-    setOpened(false);
-  };
+  
   return (
     <Sectionn>
       <Navbar.Section>

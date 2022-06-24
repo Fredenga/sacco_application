@@ -33,6 +33,12 @@ const Sectionn = styled.div`
   font-size: larger;
 `;
 
+
+const Section: React.FC = () => {
+  const user = useSelector((state: any) => state.user);
+  
+=======
+
 const Section: React.FC = () => {
   const user = useSelector((state: any) => state.user);
   const [opened, setOpened] = useState<boolean>(false);
@@ -65,6 +71,7 @@ const Section: React.FC = () => {
     SetLoading(false);
     setOpened(false);
   };
+
   return (
     <Sectionn>
       <Navbar.Section>

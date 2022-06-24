@@ -1,3 +1,4 @@
+
 import { TextInput, Title, Button, Text, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
@@ -157,6 +158,12 @@ const Register = () => {
       </RightContainer>
     </AppContainer>
   );
+
+import React from "react";
+
+const Register = () => {
+  return <div>Register</div>;
+
 };
 
 export default Register;

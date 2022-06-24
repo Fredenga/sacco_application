@@ -14,9 +14,9 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Section from "../components/Section";
+import LoggedIn from "../layouts/LoggedIn";
 import transactionsService from "../src/graphql/services/transactionsService";
 import { RootState } from "../state/store";
-import { ThisText } from "./Dashboard";
 
 export default function Transactions() {
   const userId = useSelector((state: RootState) => state.user.user._id);
@@ -30,34 +30,31 @@ export default function Transactions() {
     fetchTransactions();
   }, [userId]);
   return (
-    <AppShell
-      padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={500} p="xs">
-          <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            // hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
-          >
-            <Section {...ThisText} />
-          </Navbar>
-        </Navbar>
-      }
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
-      <Center>
-        <Text size="xl" color="teal">
-          Transactions
-        </Text>
-      </Center>
+    // <AppShell
+    //   padding="md"
+    //   navbar={
+    //     <Navbar width={{ base: 300 }} height={500} p="xs">
+    //       <Navbar
+    //         p="md"
+    //         hiddenBreakpoint="sm"
+    //         // hidden={!opened}
+    //         width={{ sm: 200, lg: 300 }}
+    //       >
+    //         <Section {...ThisText} />
+    //       </Navbar>
+    //     </Navbar>
+    //   }
+    //   styles={(theme) => ({
+    //     main: {
+    //       backgroundColor:
+    //         theme.colorScheme === "dark"
+    //           ? theme.colors.dark[8]
+    //           : theme.colors.gray[0],
+    //     },
+    //   })}
+    // >
+    <LoggedIn header={"transactions"}>
+    
       <Container>
         <Center>
           <Text color="green" my={25}>
@@ -129,6 +126,6 @@ export default function Transactions() {
           </Button>
         </Center>
       </Container>
-    </AppShell>
+    </LoggedIn>
   );
 }

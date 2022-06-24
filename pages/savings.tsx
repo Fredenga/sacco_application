@@ -19,10 +19,11 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outcome } from "../components/Notifications";
 import Section from "../components/Section";
+import LoggedIn from "../layouts/LoggedIn";
 import { getSavingsByUserId_getSavingsByUserId } from "../src/graphql/savings/__generated__/getSavingsByUserId";
 import savingsService from "../src/graphql/services/savingsService";
 import { RootState } from "../state/store";
-import { ThisText } from "./Dashboard";
+
 
 export default function Savings() {
   const [opened, setOpened] = useState<boolean>(false);
@@ -86,29 +87,30 @@ export default function Savings() {
     setAddSavings(false);
   };
   return (
-    <AppShell
-      padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={500} p="xs">
-          <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            // hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
-          >
-            <Section {...ThisText} />
-          </Navbar>
-        </Navbar>
-      }
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
+    // <AppShell
+    //   padding="md"
+    //   navbar={
+    //     <Navbar width={{ base: 300 }} height={500} p="xs">
+    //       <Navbar
+    //         p="md"
+    //         hiddenBreakpoint="sm"
+    //         // hidden={!opened}
+    //         width={{ sm: 200, lg: 300 }}
+    //       >
+    //         <Section {...ThisText} />
+    //       </Navbar>
+    //     </Navbar>
+    //   }
+    //   styles={(theme) => ({
+    //     main: {
+    //       backgroundColor:
+    //         theme.colorScheme === "dark"
+    //           ? theme.colors.dark[8]
+    //           : theme.colors.gray[0],
+    //     },
+    //   })}
+    // >
+    <LoggedIn header={"savings"}>
       <Modal
         opened={opened}
         centered
@@ -142,11 +144,7 @@ export default function Savings() {
         </Stack>
       </Modal>
 
-      <Center>
-        <Text size="xl" color="teal">
-          Savings
-        </Text>
-      </Center>
+     
       <Container>
         <Group position="apart">
           <Text color="green" my={25}>
@@ -219,6 +217,7 @@ export default function Savings() {
           </Center>
         )}
       </Container>
-    </AppShell>
+    </LoggedIn>
+    // </AppShell>
   );
 }

@@ -21,11 +21,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outcome } from "../components/Notifications";
 import Section from "../components/Section";
+import LoggedIn from "../layouts/LoggedIn";
 import { getAllLoansByUserId_getAllLoansByUserId_loans } from "../src/graphql/loans/__generated__/getAllLoansByUserId";
 import { getAllLoanTypes_getAllLoanTypes } from "../src/graphql/loans/__generated__/getAllLoanTypes";
 import loansService from "../src/graphql/services/loansService";
 import { RootState } from "../state/store";
-import { ThisText } from "./Dashboard";
+
 
 export default function Loans() {
   const [loans, setLoans] = useState<getAllLoanTypes_getAllLoanTypes[]>([]);
@@ -75,29 +76,30 @@ export default function Loans() {
   // const loanAmounts = userLoans.length > 0 && userLoans.map(userLoan => userLoan.amount)
 
   return (
-    <AppShell
-      padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={500} p="xs">
-          <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
-          >
-            <Section {...ThisText} />
-          </Navbar>
-        </Navbar>
-      }
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
+    // <AppShell
+    //   padding="md"
+    //   navbar={
+    //     <Navbar width={{ base: 300 }} height={500} p="xs">
+    //       <Navbar
+    //         p="md"
+    //         hiddenBreakpoint="sm"
+    //         hidden={!opened}
+    //         width={{ sm: 200, lg: 300 }}
+    //       >
+    //         <Section {...ThisText} />
+    //       </Navbar>
+    //     </Navbar>
+    //   }
+    //   styles={(theme) => ({
+    //     main: {
+    //       backgroundColor:
+    //         theme.colorScheme === "dark"
+    //           ? theme.colors.dark[8]
+    //           : theme.colors.gray[0],
+    //     },
+    //   })}
+    // >
+    <LoggedIn header={"loan"}>
       <Modal
         opened={guarantor}
         onClose={() => setGuarantor(false)}
@@ -160,11 +162,7 @@ export default function Loans() {
           </Button>
         </Stack>
       </Modal>
-      <Center>
-        <Text size="xl" color="teal">
-          Loans
-        </Text>
-      </Center>
+      
       <Space />
       <Container>
         <Text color="green">Total Loans: Ksh 500,000</Text>
@@ -228,6 +226,7 @@ export default function Loans() {
           </Center>
         )}
       </Container>
-    </AppShell>
+    </LoggedIn>
+    // </AppShell>
   );
 }

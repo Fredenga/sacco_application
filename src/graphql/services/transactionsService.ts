@@ -13,5 +13,8 @@ class TransactionsService {
       throw error;
     }
   }
+  
 }
+
+
 export default new TransactionsService();

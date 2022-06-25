@@ -1,4 +1,5 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import QuickLinks from "../components/QuickLinks";
@@ -40,6 +41,17 @@ const Middle = styled.div`
 `;
 
 function LoggedIn({ header, children }: { header: string; children: any }) {
+  const router = useRouter();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token) {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/");
+    }
+  }, []);
+
   return (
     <Container>
       <Section />

@@ -54,7 +54,6 @@ export default function Transactions() {
     //   })}
     // >
     <LoggedIn header={"transactions"}>
-    
       <Container>
         <Center>
           <Text color="green" my={25}>

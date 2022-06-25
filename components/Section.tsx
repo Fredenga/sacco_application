@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+import { useRouter } from "next/router";
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -33,43 +34,13 @@ const Sectionn = styled.div`
   font-size: larger;
 `;
 
-
 const Section: React.FC = () => {
-  const user = useSelector((state: any) => state.user);
-  
-=======
+  const { user } = useSelector((state: any) => state.user);
+  const router = useRouter();
+  const handleLogout = () => {
+    localStorage.clear();
 
-const Section: React.FC = () => {
-  const user = useSelector((state: any) => state.user);
-  const [opened, setOpened] = useState<boolean>(false);
-  const [email, setemail] = useState<string>("");
-  const [password, setpassword] = useState<string>("");
-  const dispatch = useDispatch();
-
-  const [loading, SetLoading] = useState<boolean>(false);
-  const handleClick = () => {};
-  const handleSubmit = async () => {
-    SetLoading(true);
-    try {
-      const { login } = await userService.login({ email, password });
-      login && localStorage.setItem("token", login.accessToken);
-      console.log(login);
-      dispatch(loginUser(login));
-      Outcome(
-        "Login Successfull",
-        `Welcome back, ${login.user.firstName}!`,
-        "green"
-      );
-    } catch (error) {
-      Outcome("Login Not Successfull", "Please try again", "red");
-
-      console.log({
-        message: "failed",
-        error,
-      });
-    }
-    SetLoading(false);
-    setOpened(false);
+    router.replace("/");
   };
 
   return (
@@ -79,7 +50,7 @@ const Section: React.FC = () => {
           <Text color="cyan" size="xl">
             Essaco
           </Text>
-          <Text>{user.firstName}</Text>
+          <Text py={3}>Hi {user.firstName}</Text>
         </Paper>
       </Navbar.Section>
       <Navbar.Section>
@@ -98,55 +69,12 @@ const Section: React.FC = () => {
           <Stack>
             <NextLink href="/profile">profile</NextLink>
 
-            <span>logout</span>
+            <span style={{ cursor: "pointer" }} onClick={handleLogout}>
+              logout
+            </span>
           </Stack>
         </Paper>
       </Navbar.Section>
-      {/* <Navbar.Section>
-        <Paper radius="xs" p="xl">
-          <Text onClick={handleClick} mb={6}>
-            {text}
-          </Text>
-          <Text>{followUp}</Text>
-        </Paper>
-      </Navbar.Section> */}
-
-      {/* <Modal
-        opened={opened}
-        centered
-        size="lg"
-        onClose={() => {
-          setOpened(false);
-          setemail("");
-          setpassword("");
-        }}
-        title="Login"
-      >
-        <Stack>
-          <TextInput
-            label="Email"
-            placeholder="Enter your email address"
-            onChange={(e) => setemail(e.target.value)}
-            required
-          />
-          <TextInput
-            label="Password"
-            placeholder="Enter your password"
-            onChange={(e) => setpassword(e.target.value)}
-            required
-          />
-          <Center>
-            <Button
-              onClick={handleSubmit}
-              variant="light"
-              color="green"
-              loading={loading}
-            >
-              Login
-            </Button>
-          </Center>
-        </Stack>
-      </Modal> */}
     </Sectionn>
   );
 };

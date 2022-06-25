@@ -31,6 +31,8 @@ export const apolloClient = new ApolloClient({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+ 
+
   return (
     <ApolloProvider client={apolloClient}>
       <NotificationsProvider>

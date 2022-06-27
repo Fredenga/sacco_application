@@ -48,11 +48,10 @@ function LoggedIn({ header, children }: { header: string; children: any }) {
 
   useEffect(() => {
     if (token) {
-      router.replace("/dashboard");
     } else {
       router.replace("/");
     }
-  }, [token, router]);
+  }, []);
 
   return (
     <Container>

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "schema:download": "npx apollo client:download-schema --endpoint=https://sacco.up.railway.app/graphql ./src/graphql/graphql-schema.json",
-    "schema:generate-watch": "npx apollo codegen:generate --localSchemaFile=./src/graphql/graphql-schema.json --target=typescript --tagName=gql"
+    "schema:generate-watch": "npx apollo codegen:generate --localSchemaFile=./src/graphql/graphql-schema.json --target=typescript --tagName=gql",
+    "ngrok": "ngrok http 3000"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -28,6 +29,7 @@
     "@mantine/spotlight": "^4.2.6",
     "@radix-ui/react-icons": "^1.1.1",
     "@reduxjs/toolkit": "^1.8.2",
+    "axios": "^0.27.2",
     "dayjs": "^1.11.2",
     "font-awesome": "^4.7.0",
     "next": "12.1.6",
@@ -46,6 +48,7 @@
     "@types/styled-components": "^5.1.25",
     "eslint": "8.16.0",
     "eslint-config-next": "12.1.6",
+    "ngrok": "^4.3.1",
     "typescript": "4.7.2"
   }
 }

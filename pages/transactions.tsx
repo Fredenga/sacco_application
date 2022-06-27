@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DataFetch } from "../components/DataFetch";
+import TransactionModal from "../components/TransactionModal";
 import LoggedIn from "../layouts/LoggedIn";
 import transactionsService from "../src/graphql/services/transactionsService";
 import { RootState } from "../state/store";
@@ -18,6 +19,14 @@ export default function Transactions() {
   const userId = useSelector((state: RootState) => state.user.user._id);
   const [balance, setBalance] = useState<number>();
   const [more, SetMore] = useState<number>();
+  const [open, setOpen] = useState({
+    status: false,
+    type: "",
+  });
+
+  const handleTransaction = (type: string) => {
+    setOpen({ status: true, type });
+  };
 
   const { transactions, tx } = DataFetch(more);
   useEffect(() => {
@@ -30,6 +39,7 @@ export default function Transactions() {
   return (
     <LoggedIn header={"transactions"}>
       <Container>
+        { <TransactionModal  open={open} setOpen={setOpen} />}
         <Center>
           <Text color="green" my={25}>
             Escrow Balance: Ksh {balance}
@@ -37,12 +47,20 @@ export default function Transactions() {
         </Center>
         <Center>
           <Container my={10}>
-            <Button variant="light" color="teal">
+            <Button
+              variant="light"
+              color="teal"
+              onClick={() => handleTransaction("deposit")}
+            >
               Deposit
             </Button>
           </Container>
           <Container>
-            <Button variant="light" color="teal">
+            <Button
+              variant="light"
+              color="teal"
+              onClick={() => handleTransaction("withdraw")}
+            >
               Withdraw
             </Button>
           </Container>

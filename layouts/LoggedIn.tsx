@@ -51,7 +51,7 @@ function LoggedIn({ header, children }: { header: string; children: any }) {
     } else {
       router.replace("/");
     }
-  }, []);
+  }, [router, token]);
 
   return (
     <Container>

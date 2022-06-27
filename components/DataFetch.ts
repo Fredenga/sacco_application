@@ -16,7 +16,7 @@ interface Loans {
   amountRemaining: number;
   _id: string;
 }
-interface Savings {
+export interface Savings {
   _id: string;
   name: string;
   type: string;

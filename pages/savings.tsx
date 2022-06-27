@@ -1,6 +1,4 @@
 import {
-  AppShell,
-  Navbar,
   Center,
   Text,
   Container,
@@ -8,8 +6,6 @@ import {
   Button,
   Grid,
   Progress,
-  MediaQuery,
-  Aside,
   Paper,
   Modal,
   Stack,
@@ -18,7 +14,6 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outcome } from "../components/Notifications";
-import Section from "../components/Section";
 import LoggedIn from "../layouts/LoggedIn";
 import { getSavingsByUserId_getSavingsByUserId } from "../src/graphql/savings/__generated__/getSavingsByUserId";
 import savingsService from "../src/graphql/services/savingsService";
@@ -85,30 +80,16 @@ export default function Savings() {
     setLoading(false);
     setAddSavings(false);
   };
+  const findPercentage = (saving: any) => {
+    let p = saving.amountSaved / saving.amountAimed;
+    const target = p * 100;
+    if (target >= 100) {
+      return 100;
+    } else {
+      return Math.floor(target);
+    }
+  };
   return (
-    // <AppShell
-    //   padding="md"
-    //   navbar={
-    //     <Navbar width={{ base: 300 }} height={500} p="xs">
-    //       <Navbar
-    //         p="md"
-    //         hiddenBreakpoint="sm"
-    //         // hidden={!opened}
-    //         width={{ sm: 200, lg: 300 }}
-    //       >
-    //         <Section {...ThisText} />
-    //       </Navbar>
-    //     </Navbar>
-    //   }
-    //   styles={(theme) => ({
-    //     main: {
-    //       backgroundColor:
-    //         theme.colorScheme === "dark"
-    //           ? theme.colors.dark[8]
-    //           : theme.colors.gray[0],
-    //     },
-    //   })}
-    // >
     <LoggedIn header={"savings"}>
       <Modal
         opened={opened}
@@ -179,7 +160,12 @@ export default function Savings() {
 
                   <Text>Amount: Ksh {saving.amountSaved}</Text>
                   <Text>Target: Ksh {saving.amountAimed}</Text>
-                  <Progress label="50%" size="md" color="green" value={50} />
+                  <Progress
+                    label={`${findPercentage(saving)}%`}
+                    size="md"
+                    color="green"
+                    value={findPercentage(saving)}
+                  />
                 </Paper>
                 <Modal
                   opened={addSavings}
@@ -216,6 +202,5 @@ export default function Savings() {
         )}
       </Container>
     </LoggedIn>
-    // </AppShell>
   );
 }

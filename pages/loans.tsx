@@ -1,15 +1,10 @@
 import {
-  AppShell,
-  Navbar,
   Center,
   Text,
   Container,
-  Group,
   Button,
   Grid,
   Progress,
-  MediaQuery,
-  Aside,
   Paper,
   Modal,
   Stack,
@@ -20,7 +15,6 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outcome } from "../components/Notifications";
-import Section from "../components/Section";
 import LoggedIn from "../layouts/LoggedIn";
 import { getAllLoansByUserId_getAllLoansByUserId_loans } from "../src/graphql/loans/__generated__/getAllLoansByUserId";
 import { getAllLoanTypes_getAllLoanTypes } from "../src/graphql/loans/__generated__/getAllLoanTypes";
@@ -73,11 +67,6 @@ export default function Loans() {
     setLoading(false);
     setGuarantor(false);
   };
-
-  const total = userLoans
-    .map((loan) => loan.amountRemaining)
-    .reduce((current, add) => current + add);
-  // const loanAmounts = userLoans.length > 0 && userLoans.map(userLoan => userLoan.amount)
 
   const handleApplyLoan = async () => {
     setLoading(true);
@@ -173,7 +162,7 @@ export default function Loans() {
       <LoanApplication />
       <Space />
       <Container>
-        <Text color="green">Total Loans: Ksh {total}</Text>
+        <Text color="green">Total Loans: Ksh 500,000</Text>
 
         <Center>
           <Container my={10}>

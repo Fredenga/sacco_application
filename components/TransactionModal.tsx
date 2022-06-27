@@ -105,10 +105,14 @@ const handleDeposit = async ({
   userId: string;
 }) => {
   console.log(process.env.NEXT_PUBLIC_BACKEND_URI);
-  const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URI!, {
-    phoneNumber,
-    amount,
-    userId,
-  });
-  return response.data;
+  try {
+    const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URI!, {
+      phoneNumber,
+      amount,
+      userId,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

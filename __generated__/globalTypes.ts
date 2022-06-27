@@ -12,6 +12,13 @@ export interface CreateGuarantorDto {
   amount: number;
 }
 
+export interface CreateLoanDto {
+  amount: number;
+  userId: string;
+  loanTypeId: string;
+  token?: string | null;
+}
+
 export interface CreateNormalSavingDto {
   userId: string;
   amountAimed: number;

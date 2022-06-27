@@ -7,3 +7,20 @@ export const CREATE_GUARANTOR = gql`
     }
   }
 `;
+export const INITIALIZE_LOAN = gql`
+  mutation initializeLoan($input: CreateLoanDto!) {
+    initializeLoan(createLoan: $input) {
+      loan {
+        amount
+        loanTypeId
+        userId
+      }
+      token {
+        status
+        token
+      }
+      message
+      amountRemaining
+    }
+  }
+`;

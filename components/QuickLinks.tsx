@@ -2,6 +2,7 @@ import { Button, Center, Container, Stack, Text } from "@mantine/core";
 import { PlusIcon } from "@radix-ui/react-icons";
 import React from "react";
 import styled from "styled-components";
+import { DataFetch } from "./DataFetch";
 const Aside = styled.div`
   width: 350px;
   padding: 20px;
@@ -15,6 +16,7 @@ const SideApp = styled.div`
 `;
 
 function QuickLinks() {
+  const { totalLoans, totalSavings, users } = DataFetch();
   return (
     <Aside>
       <Container mb={10}>
@@ -43,15 +45,15 @@ function QuickLinks() {
         <Stack>
           <SideApp>
             <Text weight="lighter">Total Savings</Text>
-            <Text>397927323</Text>
+            <Text>Ksh {totalSavings}</Text>
           </SideApp>
           <SideApp>
             <Text weight="lighter">Total Loans</Text>
-            <Text>992927320320</Text>
+            <Text>Ksh {totalLoans}</Text>
           </SideApp>
           <SideApp>
             <Text weight="lighter">Total Members</Text>
-            <Text>79</Text>
+            <Text>{users}</Text>
           </SideApp>
         </Stack>
       </Center>

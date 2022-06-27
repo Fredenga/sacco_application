@@ -47,7 +47,7 @@ const Section: React.FC = () => {
     <Sectionn>
       <Navbar.Section>
         <Paper radius="xs" p="lg">
-          <Text color="cyan" size="xl">
+          <Text color="green" size="xl">
             Essaco
           </Text>
           <Text py={3}>Hi {user.firstName}</Text>
@@ -69,9 +69,9 @@ const Section: React.FC = () => {
           <Stack>
             <NextLink href="/profile">profile</NextLink>
 
-            <span style={{ cursor: "pointer" }} onClick={handleLogout}>
+            <Text style={{ cursor: "pointer" }} onClick={handleLogout}>
               logout
-            </span>
+            </Text>
           </Stack>
         </Paper>
       </Navbar.Section>

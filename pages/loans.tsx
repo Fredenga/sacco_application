@@ -27,7 +27,6 @@ import { getAllLoanTypes_getAllLoanTypes } from "../src/graphql/loans/__generate
 import loansService from "../src/graphql/services/loansService";
 import { RootState } from "../state/store";
 
-
 export default function Loans() {
   const [loans, setLoans] = useState<getAllLoanTypes_getAllLoanTypes[]>([]);
   const userId = useSelector((state: RootState) => state.user.user._id);
@@ -51,6 +50,7 @@ export default function Loans() {
   const [amount, setAmount] = useState<number>(0);
   const [guarantorAmount, setGuarantorAmount] = useState<number>(0);
   const [loanType, setLoanType] = useState("");
+  const [token, setToken] = useState<string>("");
   const loan = loans.find((loan) => loan.name === loanType);
   const calculateAmountToPay = () => {
     if (loan) {
@@ -73,56 +73,35 @@ export default function Loans() {
     setLoading(false);
     setGuarantor(false);
   };
+
+  const total = userLoans
+    .map((loan) => loan.amountRemaining)
+    .reduce((current, add) => current + add);
   // const loanAmounts = userLoans.length > 0 && userLoans.map(userLoan => userLoan.amount)
 
-  return (
-    // <AppShell
-    //   padding="md"
-    //   navbar={
-    //     <Navbar width={{ base: 300 }} height={500} p="xs">
-    //       <Navbar
-    //         p="md"
-    //         hiddenBreakpoint="sm"
-    //         hidden={!opened}
-    //         width={{ sm: 200, lg: 300 }}
-    //       >
-    //         <Section {...ThisText} />
-    //       </Navbar>
-    //     </Navbar>
-    //   }
-    //   styles={(theme) => ({
-    //     main: {
-    //       backgroundColor:
-    //         theme.colorScheme === "dark"
-    //           ? theme.colors.dark[8]
-    //           : theme.colors.gray[0],
-    //     },
-    //   })}
-    // >
-    <LoggedIn header={"loan"}>
-      <Modal
-        opened={guarantor}
-        onClose={() => setGuarantor(false)}
-        title="Be a Guarantor"
-        centered
-      >
-        <Stack>
-          <TextInput
-            label="Amount"
-            placeholder="Amount (KSH)"
-            required
-            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
-          />
-          <Button
-            loading={loading}
-            onClick={beAGuarantor}
-            variant="light"
-            color="green"
-          >
-            Apply for Guarantorship
-          </Button>
-        </Stack>
-      </Modal>
+  const handleApplyLoan = async () => {
+    setLoading(true);
+    const res = await loansService.initializeLoan({
+      amount,
+      userId,
+      token,
+      loanTypeId: loan?._id || "",
+    });
+    if (res.status) {
+      Outcome(
+        "Loan application successful",
+        `You have been awarded Ksh ${amount}`,
+        "green"
+      );
+    } else {
+      Outcome("Loan application failed", `${res.error}`, "red");
+    }
+    setLoading(false);
+    setOpened(false);
+  };
+
+  const LoanApplication = () => {
+    return (
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
@@ -151,21 +130,50 @@ export default function Loans() {
           <TextInput
             label="Token"
             placeholder="Paste your guarantor's Token"
-            required
+            onChange={(e) => setToken(e.target.value)}
           />
           <Text>Interest Rate: {loan?.interestRate}%</Text>
 
           <Text>Amount to Pay: {calculateAmountToPay()}</Text>
           <Text>Due Date: {loan?.repayPeriod} months</Text>
-          <Button variant="light" color="green">
+          <Button onClick={handleApplyLoan} variant="light" color="green">
             Apply Loan
           </Button>
         </Stack>
       </Modal>
-      
+    );
+  };
+
+  return (
+    <LoggedIn header={"loan"}>
+      <Modal
+        opened={guarantor}
+        onClose={() => setGuarantor(false)}
+        title="Be a Guarantor"
+        centered
+      >
+        <Stack>
+          <TextInput
+            label="Amount"
+            placeholder="Amount (KSH)"
+            required
+            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
+          />
+          <Button
+            loading={loading}
+            onClick={beAGuarantor}
+            variant="light"
+            color="green"
+          >
+            Apply for Guarantorship
+          </Button>
+        </Stack>
+      </Modal>
+
+      <LoanApplication />
       <Space />
       <Container>
-        <Text color="green">Total Loans: Ksh 500,000</Text>
+        <Text color="green">Total Loans: Ksh {total}</Text>
 
         <Center>
           <Container my={10}>

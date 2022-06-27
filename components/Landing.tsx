@@ -14,7 +14,7 @@ import styled from "styled-components";
 
 const Icon = styled.div`
   font-size: x-large;
-  color: #f85873;
+  color: #46af3c;
 `;
 
 const Stack = styled.div`

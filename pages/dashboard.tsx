@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import {
   AppShell,
@@ -28,63 +28,75 @@ import Section from "../components/Section";
 // };
 
 import LoggedIn from "../layouts/LoggedIn";
+
+import { DataFetch } from "../components/DataFetch";
+const UpContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 2em;
+  padding-block: 20px;
+  margin-bottom: 10px;
+  &:hover {
+    border: 1px solid lightgrey;
+    cursor: pointer;
+  }
+`;
 export default function Dashboard() {
-  console.log("hello");
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
-  const UpContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding-inline: 2em;
-    padding-block: 20px;
-    margin-bottom: 10px;
-    &:hover {
-      border: 1px solid lightgrey;
-      cursor: pointer;
-    }
-  `;
-
+  const { myLoans, mySavings, totalLoans, totalSavings, transactions } =
+    DataFetch();
 
   const abc = [1, 2, 3];
   return (
-   <LoggedIn header={"dashboard"}>
+    <LoggedIn header={"dashboard"}>
       <Container>
         <Container>
           <UpContainer>
-            <Text>Savings: 927392</Text>
+            <Text>Savings: Ksh {totalSavings}</Text>
             <Button variant="light" color="teal">
               {" "}
               View All
             </Button>
           </UpContainer>
-          <UpContainer>
-            {abc.map((bc) => (
-              <Paper key={bc}>
-                <Text>default</Text>
-                <Text>7070</Text>
-                <Progress label="50%" size="md" color="green" value={50} />
-              </Paper>
+          <Group position="apart">
+            {mySavings.map((saving) => (
+              <Container key={saving._id}>
+                <Text>{saving.name}</Text>
+                <Text>{saving.amountSaved}</Text>
+                <Progress
+                  label="80"
+                  size="md"
+                  color="green"
+                  value={saving.amountSaved}
+                />
+              </Container>
             ))}
-          </UpContainer>
+          </Group>
         </Container>
         <Container>
           <UpContainer>
-            <Text>Loans: 927392</Text>
+            <Text>Loans: Ksh {totalLoans}</Text>
             <Button variant="light" color="teal">
               {" "}
               View All
             </Button>
           </UpContainer>
-          <UpContainer>
-            {abc.map((bc) => (
-              <Paper key={bc}>
+          <Group position="apart">
+            {myLoans.map((loan) => (
+              <Container key={loan._id}>
                 <Text>default</Text>
-                <Text>7070</Text>
-                <Progress label="50%" size="md" color="green" value={50} />
-              </Paper>
+                <Text>Ksh {loan.amountPaid}</Text>
+                <Progress
+                  label={`${(loan.amountPaid / loan.amount) * 100}%`}
+                  size="md"
+                  color="green"
+                  value={loan.amountPaid}
+                />
+              </Container>
             ))}
-          </UpContainer>
+          </Group>
           <UpContainer>
             <Text>transactions</Text>
             <Button variant="light" color="teal">
@@ -92,21 +104,20 @@ export default function Dashboard() {
               view all
             </Button>
           </UpContainer>
-          {abc.map((bc) => (
-            <Stack key={bc}>
-              <Paper shadow="xl" radius="md" p="sm">
+          {transactions.map((transaction) => (
+            <Stack align="stretch" key={transaction.requestId}>
+              <Paper my={7} shadow="xl" radius="md" p="sm">
                 <Group position="apart">
-                  <Text>Deposit</Text>
-                  <Text>In</Text>
-                  <Text>45000</Text>
-                  <Text>23:34:01/20/2022</Text>
+                  <Text>{transaction.type}</Text>
+                  <Text>{transaction.from}</Text>
+                  <Text>Ksh {transaction.amount}</Text>
+                  <Text>{transaction.status}</Text>
                 </Group>
               </Paper>
             </Stack>
           ))}
         </Container>
       </Container>
-      </LoggedIn>
-  
+    </LoggedIn>
   );
 }

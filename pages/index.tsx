@@ -28,7 +28,7 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import Section, { Profile } from "../components/Section";
+// import Section,  from "../components/Section";
 import LoggedOut from "../layouts/LoggedOut";
 import Landing from "../components/Landing";
 
@@ -39,10 +39,10 @@ const Icon = styled.div`
 export default function Index() {
   const theme = useMantineTheme();
 
-  const myText: Profile = {
-    text: "login",
-    followUp: "Get Started",
-  };
+  // const myText: Profile = {
+  //   text: "login",
+  //   followUp: "Get Started",
+  // };
 
   return (
     <LoggedOut>

@@ -24,7 +24,6 @@ import { getSavingsByUserId_getSavingsByUserId } from "../src/graphql/savings/__
 import savingsService from "../src/graphql/services/savingsService";
 import { RootState } from "../state/store";
 
-
 export default function Savings() {
   const [opened, setOpened] = useState<boolean>(false);
   const [addSavings, setAddSavings] = useState<boolean>(false);
@@ -144,7 +143,6 @@ export default function Savings() {
         </Stack>
       </Modal>
 
-     
       <Container>
         <Group position="apart">
           <Text color="green" my={25}>

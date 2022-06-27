@@ -20,8 +20,9 @@ const Header = styled.div`
   justify-content: center;
   font-size: 30px;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
+  color: #13c913;
 `;
 
 const Text = styled.div`
@@ -38,6 +39,7 @@ const Middle = styled.div`
   min-height: 100vh;
   position: relative;
   background-color: whitesmoke;
+  color: #3a3939;
 `;
 
 function LoggedIn({ header, children }: { header: string; children: any }) {
@@ -50,7 +52,7 @@ function LoggedIn({ header, children }: { header: string; children: any }) {
     } else {
       router.replace("/");
     }
-  }, []);
+  }, [token, router]);
 
   return (
     <Container>

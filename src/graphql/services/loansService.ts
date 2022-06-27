@@ -1,10 +1,13 @@
 import { apolloClient } from "../../../pages/_app";
-import { CREATE_GUARANTOR } from "../loans/loansMutation";
+import { CREATE_GUARANTOR, INITIALIZE_LOAN } from "../loans/loansMutation";
 import {
   GET_ALL_LOANS_BY_USERID,
   GET_ALL_LOAN_TYPES,
 } from "../loans/loansQuery";
-import { CreateGuarantorDto } from "../../../__generated__/globalTypes";
+import {
+  CreateGuarantorDto,
+  CreateLoanDto,
+} from "../../../__generated__/globalTypes";
 
 class LoansService {
   async getAllLoanTypes() {
@@ -39,6 +42,18 @@ class LoansService {
       return response.data;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async initializeLoan(createLoan: CreateLoanDto) {
+    try {
+      const { data } = await apolloClient.mutate({
+        mutation: INITIALIZE_LOAN,
+        variables: { input: createLoan },
+      });
+      return { data, status: true };
+    } catch (error) {
+      return { error, status: false };
     }
   }
 }

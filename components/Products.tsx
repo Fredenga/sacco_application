@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import loansService from "../src/graphql/services/loansService";
@@ -64,7 +63,7 @@ function Products() {
       <Title>Our loan products</Title>
       <List>
         {loans.map((product) => (
-          <ListItem>
+          <ListItem key={product.name}>
             <Title>{product.name} loan</Title>
             <Text>
               {product.guarantor
@@ -84,4 +83,3 @@ function Products() {
 }
 
 export default Products;
-

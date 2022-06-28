@@ -89,8 +89,32 @@ export default function Loans() {
     setOpened(false);
   };
 
-  const LoanApplication = () => {
-    return (
+  return (
+    <LoggedIn header={"loan"}>
+      <Modal
+        opened={guarantor}
+        onClose={() => setGuarantor(false)}
+        title="Be a Guarantor"
+        centered
+      >
+        <Stack>
+          <TextInput
+            label="Amount"
+            placeholder="Amount (KSH)"
+            required
+            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
+          />
+          <Button
+            loading={loading}
+            onClick={beAGuarantor}
+            variant="light"
+            color="green"
+          >
+            Apply for Guarantorship
+          </Button>
+        </Stack>
+      </Modal>
+
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
@@ -130,36 +154,6 @@ export default function Loans() {
           </Button>
         </Stack>
       </Modal>
-    );
-  };
-
-  return (
-    <LoggedIn header={"loan"}>
-      <Modal
-        opened={guarantor}
-        onClose={() => setGuarantor(false)}
-        title="Be a Guarantor"
-        centered
-      >
-        <Stack>
-          <TextInput
-            label="Amount"
-            placeholder="Amount (KSH)"
-            required
-            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
-          />
-          <Button
-            loading={loading}
-            onClick={beAGuarantor}
-            variant="light"
-            color="green"
-          >
-            Apply for Guarantorship
-          </Button>
-        </Stack>
-      </Modal>
-
-      <LoanApplication />
       <Space />
       <Container>
         <Text color="green">Total Loans: Ksh 500,000</Text>

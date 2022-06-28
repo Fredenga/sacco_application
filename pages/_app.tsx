@@ -13,7 +13,7 @@ import { persistor, store } from "../state/store";
 import { PersistGate } from "redux-persist/integration/react";
 
 const httplink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: "https://sacco.up.railway.app/graphql",
   // credentials: "same-origin",
 });
 const authLink = setContext((_, { headers }) => {
@@ -31,8 +31,6 @@ export const apolloClient = new ApolloClient({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
- 
-
   return (
     <ApolloProvider client={apolloClient}>
       <NotificationsProvider>

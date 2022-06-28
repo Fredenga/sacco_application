@@ -39,7 +39,11 @@ export default function Transactions() {
   return (
     <LoggedIn header={"transactions"}>
       <Container>
+
         {<TransactionModal open={open} setOpen={setOpen} />}
+
+        { <TransactionModal  open={open} setOpen={setOpen} />}
+
         <Center>
           <Text color="green" my={25}>
             Escrow Balance: Ksh {balance}

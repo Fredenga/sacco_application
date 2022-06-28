@@ -29,13 +29,14 @@ export interface Savings {
 }
 
 interface Transactions {
+  _id:string;
   type: string;
   amount: number;
   from: string;
   to: string;
   toId: string;
   status: string;
-  requestId: string;
+
   userId: string;
 }
 

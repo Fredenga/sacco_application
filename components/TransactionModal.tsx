@@ -25,6 +25,14 @@ function TransactionModal({ setOpen, open }: Type) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+
+    setLoading(true);
+    const PhoneNumber =
+      phoneNumber[1] === "+"
+        ? Number(phoneNumber.split("+")[1])
+        : Number(phoneNumber);
+   
+
     if (open.type === "deposit") {
       setLoading(true);
       try {
@@ -32,6 +40,7 @@ function TransactionModal({ setOpen, open }: Type) {
           phoneNumber[1] === "+"
             ? Number(phoneNumber.split("+")[1])
             : Number(phoneNumber);
+
         const data = await handleDeposit({
           phoneNumber: PhoneNumber,
           amount,
@@ -49,6 +58,22 @@ function TransactionModal({ setOpen, open }: Type) {
         );
       }
     } else if (open.type === "withdraw") {
+
+      try {
+        const { data } = await handleWithDraw({
+          phoneNumber: PhoneNumber,
+          amount,
+          userId: user._id,
+        });
+
+        Outcome("Payment Success", data.ResponseDescription, "green");
+        setLoading(false);
+      } catch (error: any) {
+        setLoading(false);
+
+        Outcome("Payment failed", error.response.data.message, "red");
+      }
+
     }
   };
 
@@ -104,6 +129,17 @@ const handleDeposit = async ({
   amount: number;
   userId: string;
 }) => {
+
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI! + "/bank/outdeposit",
+      {
+        phoneNumber,
+        amount,
+        userId,
+      }
+    );
+
   console.log(process.env.NEXT_PUBLIC_BACKEND_URI);
   try {
     const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URI!, {
@@ -111,8 +147,30 @@ const handleDeposit = async ({
       amount,
       userId,
     });
+
     return response.data;
   } catch (error) {
     console.log(error);
   }
 };
+
+
+const handleWithDraw = async ({
+  phoneNumber,
+  userId,
+  amount,
+}: {
+  phoneNumber: number;
+  amount: number;
+  userId: string;
+}) => {
+  return axios.post(
+    process.env.NEXT_PUBLIC_BACKEND_URI! + "/bank/outwithdraw",
+    {
+      phoneNumber,
+      amount,
+      userId,
+    }
+  );
+};
+

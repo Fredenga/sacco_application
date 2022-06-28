@@ -40,6 +40,10 @@ const Middle = styled.div`
   position: relative;
   background-color: whitesmoke;
   color: #3a3939;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+  position: relative;
 `;
 
 function LoggedIn({ header, children }: { header: string; children: any }) {

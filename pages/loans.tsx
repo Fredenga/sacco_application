@@ -162,7 +162,7 @@ export default function Loans() {
       <LoanApplication />
       <Space />
       <Container>
-        <Text color="green">Total Loans: Ksh 500,000</Text>
+        <Text color="green">Total Loans: {userLoans.length}</Text>
 
         <Center>
           <Container my={10}>

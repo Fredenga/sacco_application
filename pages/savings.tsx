@@ -1,3 +1,4 @@
+import { gql, useMutation } from "@apollo/client";
 import {
   Center,
   Text,
@@ -24,6 +25,7 @@ export default function Savings() {
   const [addSavings, setAddSavings] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const userId = useSelector((state: RootState) => state.user.user._id);
+  const [load, setLoad] = useState<boolean>(false);
 
   const [amountAimed, setAmountAimed] = useState<number>(0);
   const [name, setName] = useState<string>("");
@@ -54,7 +56,7 @@ export default function Savings() {
       const res = await savingsService.getSavingsByUserId(userId);
       const allSavings: getSavingsByUserId_getSavingsByUserId[] =
         res.data.getSavingsByUserId;
-      setSavings(allSavings.filter((saving) => saving.name != "SACCO_SAVINGS"));
+      setSavings(allSavings);
     };
     fetchSavings();
   }, [userId]);
@@ -89,6 +91,32 @@ export default function Savings() {
       return Math.floor(target);
     }
   };
+  const [mutateFunction] = useMutation(WITHDRAW, {
+    onCompleted: (data) => {
+      setLoad(false);
+      setOpened(false);
+      if (data.transferSavingsToEscrow.error !== null) {
+        console.log(data);
+        Outcome(
+          "An error occured",
+          data.transferSavingsToEscrow.error.message,
+          "red"
+        );
+      } else {
+        Outcome("Success", data.transferSavingsToEscrow.message, "green");
+      }
+    },
+  });
+
+  const handleWithDraw = (id: string) => {
+    setLoad(true);
+    mutateFunction({
+      variables: {
+        input: id,
+      },
+    });
+  };
+
   return (
     <LoggedIn header={"savings"}>
       <Modal
@@ -190,6 +218,14 @@ export default function Savings() {
                     >
                       Add Amount
                     </Button>
+                    <Button
+                      onClick={() => handleWithDraw(saving._id)}
+                      variant="light"
+                      color="teal"
+                      loading={load}
+                    >
+                      Withdraw
+                    </Button>
                   </Stack>
                 </Modal>
               </Grid.Col>
@@ -204,3 +240,15 @@ export default function Savings() {
     </LoggedIn>
   );
 }
+
+const WITHDRAW = gql`
+  mutation withdraw($input: String!) {
+    transferSavingsToEscrow(savingsId: $input) {
+      message
+      error {
+        error
+        message
+      }
+    }
+  }
+`;

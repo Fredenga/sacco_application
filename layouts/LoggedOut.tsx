@@ -51,9 +51,6 @@ function LoggedOut({ children }: { children: any }) {
           <Link href="/product">
             <Text>products</Text>
           </Link>
-          <Link href="/about">
-            <Text>about</Text>
-          </Link>
         </Links>
         <Links>
           <Link href="/login">

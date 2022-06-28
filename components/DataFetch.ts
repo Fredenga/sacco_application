@@ -29,7 +29,7 @@ export interface Savings {
 }
 
 interface Transactions {
-  _id:string;
+  _id: string;
   type: string;
   amount: number;
   from: string;
@@ -62,7 +62,7 @@ export const DataFetch = (size?: number) => {
     fetchData();
   }, [userId]);
   const myLoans = loans.slice(1, loans.length);
-  const mySavings = savings.slice(1, savings.length);
+  const mySavings = savings;
   let transactions;
   transactions = size ? tx.slice(0, size) : tx.slice(0, 5);
   let totalSavings, totalLoans;

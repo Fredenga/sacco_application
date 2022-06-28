@@ -1,4 +1,5 @@
-import { Button, Center, Container, Stack, Text } from "@mantine/core";
+import { gql, useQuery } from "@apollo/client";
+import { Button, Center, Container, Stack, Text, Title } from "@mantine/core";
 import { PlusIcon } from "@radix-ui/react-icons";
 import React from "react";
 import styled from "styled-components";
@@ -16,7 +17,8 @@ const SideApp = styled.div`
 `;
 
 function QuickLinks() {
-  const { totalLoans, totalSavings, users } = DataFetch();
+  const { loading, error, data } = useQuery(GET_SACCO_STATS);
+
   return (
     <Aside>
       <Container mb={10}>
@@ -42,23 +44,34 @@ function QuickLinks() {
         </Text>
       </Container>
       <Center>
-        <Stack>
-          <SideApp>
-            <Text weight="lighter">Total Savings</Text>
-            <Text>Ksh {totalSavings}</Text>
-          </SideApp>
-          <SideApp>
-            <Text weight="lighter">Total Loans</Text>
-            <Text>Ksh {totalLoans}</Text>
-          </SideApp>
-          <SideApp>
-            <Text weight="lighter">Total Members</Text>
-            <Text>{users}</Text>
-          </SideApp>
-        </Stack>
+        {loading && <Title order={5}>loading</Title>}
+        {!loading && !error && (
+          <Stack>
+            <SideApp>
+              <Text weight="lighter">Total Savings</Text>
+              <Text>Ksh {data?.getTotalSavings}</Text>
+            </SideApp>
+            <SideApp>
+              <Text weight="lighter">Total Loans</Text>
+              <Text>Ksh {data?.getTotalLoans}</Text>
+            </SideApp>
+            <SideApp>
+              <Text weight="lighter">Total Members</Text>
+              <Text>{data?.getUsersTotal}</Text>
+            </SideApp>
+          </Stack>
+        )}
       </Center>
     </Aside>
   );
 }
 
 export default QuickLinks;
+
+const GET_SACCO_STATS = gql`
+  query stats {
+    getTotalLoans
+    getTotalSavings
+    getUsersTotal
+  }
+`;

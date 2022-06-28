@@ -21,7 +21,7 @@ export const GET_USER_TRANSACTIONS = gql`
       to
       toId
       status
-      requestId
+      _id
       userId
     }
   }

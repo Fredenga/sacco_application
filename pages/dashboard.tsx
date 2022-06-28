@@ -19,13 +19,6 @@ import {
   Group,
 } from "@mantine/core";
 import styled from "styled-components";
-import { NextLink } from "@mantine/next";
-import Section from "../components/Section";
-// export const ThisText: Profile = {
-//   text: "Profile",
-//   followUp: "Log Out",
-//   owner: "Hi Satin",
-// };
 
 import LoggedIn from "../layouts/LoggedIn";
 
@@ -42,13 +35,9 @@ const UpContainer = styled.div`
   }
 `;
 export default function Dashboard() {
-  const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
-
   const { myLoans, mySavings, totalLoans, totalSavings, transactions } =
     DataFetch();
 
-  const abc = [1, 2, 3];
   return (
     <LoggedIn header={"dashboard"}>
       <Container>
@@ -105,7 +94,9 @@ export default function Dashboard() {
             </Button>
           </UpContainer>
           {transactions.map((transaction) => (
-            <Stack align="stretch" key={transaction.requestId}>
+            
+            <Stack align="stretch" key={transaction._id}>
+              {console.log(transaction)}
               <Paper my={7} shadow="xl" radius="md" p="sm">
                 <Group position="apart">
                   <Text>{transaction.type}</Text>

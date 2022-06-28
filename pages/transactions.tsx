@@ -39,7 +39,7 @@ export default function Transactions() {
   return (
     <LoggedIn header={"transactions"}>
       <Container>
-        { <TransactionModal  open={open} setOpen={setOpen} />}
+        {<TransactionModal open={open} setOpen={setOpen} />}
         <Center>
           <Text color="green" my={25}>
             Escrow Balance: Ksh {balance}
@@ -72,7 +72,7 @@ export default function Transactions() {
         </Text>
         <Stack>
           {transactions.map((tx) => (
-            <Paper key={tx.requestId} shadow="xl" radius="md" p="sm">
+            <Paper key={tx._id} shadow="xl" radius="md" p="sm">
               <Group position="apart">
                 <Text>{tx.type}</Text>
                 <Text>{tx.from}</Text>

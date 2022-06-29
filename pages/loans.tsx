@@ -192,7 +192,7 @@ export default function Loans() {
           <Text my={10} size="xl" color="green">
             Current Loans
           </Text>
-          <Container>{token && <GuarantorToken />}</Container>
+          <Container>{token && <GuarantorToken token={token} />}</Container>
         </Center>
         {userLoans.length > 0 ? (
           <Grid grow>

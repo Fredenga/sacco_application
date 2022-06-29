@@ -1,8 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { Dialog, Group, Button, TextInput, Text } from "@mantine/core";
+interface TokenProps {
+  token: String;
+}
 
-const GuarantorToken = () => {
+const GuarantorToken: React.FC<TokenProps> = ({ token }) => {
   const [opened, setOpened] = useState(false);
   return (
     <div>
@@ -22,8 +25,7 @@ const GuarantorToken = () => {
         </Text>
 
         <Group align="flex-end">
-          <TextInput placeholder="token" style={{ flex: 1 }} />
-          <Button onClick={() => setOpened(false)}>Subscribe</Button>
+          <Text>{token}</Text>
         </Group>
       </Dialog>
     </div>

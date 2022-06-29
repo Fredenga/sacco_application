@@ -28,7 +28,9 @@ export interface Savings {
   amountLoanable: number;
 }
 
+
 export interface Transactions {
+
   _id: string;
   type: string;
   amount: number;
@@ -56,7 +58,9 @@ export const DataFetch = (size?: number) => {
     fetchData();
   }, [userId]);
   const myLoans = loans.slice(1, loans.length);
+
   const mySavings = savings.slice(1, savings.length);
+
 
   return {
     mySavings,

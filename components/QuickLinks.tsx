@@ -1,5 +1,7 @@
+
 import { Button, Center, Container, Stack, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 
@@ -22,6 +24,7 @@ const SideApp = styled.div`
 `;
 
 function QuickLinks() {
+
   const router = useRouter();
   const [users, setUsers] = useState<number>(0);
 
@@ -32,6 +35,7 @@ function QuickLinks() {
     };
     getData();
   }, []);
+
 
   return (
     <Aside>
@@ -74,6 +78,7 @@ function QuickLinks() {
         </Text>
       </Container>
       <Center>
+
         <Stack>
           <SideApp>
             <Text weight="lighter">Total Savings</Text>
@@ -88,9 +93,18 @@ function QuickLinks() {
             <Text>{users}</Text>
           </SideApp>
         </Stack>
+
       </Center>
     </Aside>
   );
 }
 
 export default QuickLinks;
+
+const GET_SACCO_STATS = gql`
+  query stats {
+    getTotalLoans
+    getTotalSavings
+    getUsersTotal
+  }
+`;

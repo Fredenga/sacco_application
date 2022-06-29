@@ -67,8 +67,6 @@ const Section: React.FC = () => {
       <Navbar.Section>
         <Paper radius="xs" p="xl">
           <Stack>
-            <NextLink href="/profile">profile</NextLink>
-
             <Text style={{ cursor: "pointer" }} onClick={handleLogout}>
               logout
             </Text>

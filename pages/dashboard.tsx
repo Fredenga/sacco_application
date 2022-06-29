@@ -31,6 +31,7 @@ const UpContainer = styled.div`
   }
 `;
 export default function Dashboard() {
+
   const [tx, setTx] = useState<Transactions[]>([]);
   const userId = useSelector((state: RootState) => state.user.user._id);
 
@@ -44,6 +45,7 @@ export default function Dashboard() {
     getTx();
   }, [userId]);
   const { myLoans, mySavings } = DataFetch();
+
 
   return (
     <LoggedIn header={"dashboard"}>
@@ -100,6 +102,7 @@ export default function Dashboard() {
               view all
             </Button>
           </UpContainer>
+
           {transactions.length > 0 ? (
             transactions.map((transaction) => (
               <Stack align="stretch" key={transaction._id}>
@@ -116,6 +119,7 @@ export default function Dashboard() {
           ) : (
             <Center>No Transactions Yet</Center>
           )}
+
         </Container>
       </Container>
     </LoggedIn>

@@ -37,20 +37,30 @@ const Image = styled.img`
 const Register = () => {
   const [loading, SetLoading] = useState<boolean>(false);
   const router = useRouter();
+
   const handleRegister = async (values: typeof form.values) => {
+    const { confirmPassword, ...variable } = values;
     SetLoading(true);
     try {
-      const { createUser } = await userService.createUser(values);
-
-      Outcome(
-        "Registration Successfull",
-        `Hi ${createUser.user.firstName}, welcome aboard!`,
-        "green"
-      );
-      router.replace("/login");
+      const { createUser } = await userService.createUser(variable);
+      console.log(createUser);
+      if (createUser.errors !== null) {
+        Outcome(
+          "Registration Not Successfull",
+          createUser.errors.message,
+          "red"
+        );
+      } else {
+        Outcome(
+          "Registration Successfull",
+          `Hi ${createUser.user.firstName}, welcome aboard!`,
+          "green"
+        );
+        router.replace("/login");
+      }
     } catch (error) {
       console.log(error);
-      Outcome("Registration Not Successfull", "check your email", "red");
+      Outcome("Registration Not Successfull", "check your credentials", "red");
     }
     SetLoading(false);
   };

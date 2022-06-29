@@ -166,7 +166,9 @@ export default function Loans() {
       </Modal>
       <Space />
       <Container>
+
         <Text color="green">Total Loans: Ksh {total}</Text>
+
 
         <Center>
           <Container my={10}>

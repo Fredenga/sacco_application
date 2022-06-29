@@ -1,4 +1,4 @@
-
+import { gql } from "@apollo/client";
 import { Button, Center, Container, Stack, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 
@@ -24,7 +24,6 @@ const SideApp = styled.div`
 `;
 
 function QuickLinks() {
-
   const router = useRouter();
   const [users, setUsers] = useState<number>(0);
 
@@ -35,7 +34,6 @@ function QuickLinks() {
     };
     getData();
   }, []);
-
 
   return (
     <Aside>
@@ -78,7 +76,6 @@ function QuickLinks() {
         </Text>
       </Container>
       <Center>
-
         <Stack>
           <SideApp>
             <Text weight="lighter">Total Savings</Text>
@@ -93,7 +90,6 @@ function QuickLinks() {
             <Text>{users}</Text>
           </SideApp>
         </Stack>
-
       </Center>
     </Aside>
   );

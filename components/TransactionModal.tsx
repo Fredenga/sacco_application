@@ -1,7 +1,6 @@
-import { Button, Group, Modal, Text, TextInput } from "@mantine/core";
+import { Button, Modal, TextInput } from "@mantine/core";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import axios from "axios";
 import { Outcome } from "./Notifications";
 
@@ -23,15 +22,31 @@ function TransactionModal({ setOpen, open }: Type) {
   const [phoneNumber, setPhoneNumber] = useState<string>(user.phoneNumber);
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const handleWithDraw = async ({
+    phoneNumber,
+    userId,
+    amount,
+  }: {
+    phoneNumber: number;
+    amount: number;
+    userId: string;
+  }) => {
+    return axios.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI! + "/bank/outwithdraw",
+      {
+        phoneNumber,
+        amount,
+        userId,
+      }
+    );
+  };
 
   const handleSubmit = async () => {
-
     setLoading(true);
     const PhoneNumber =
       phoneNumber[1] === "+"
         ? Number(phoneNumber.split("+")[1])
         : Number(phoneNumber);
-   
 
     if (open.type === "deposit") {
       setLoading(true);
@@ -58,7 +73,6 @@ function TransactionModal({ setOpen, open }: Type) {
         );
       }
     } else if (open.type === "withdraw") {
-
       try {
         const { data } = await handleWithDraw({
           phoneNumber: PhoneNumber,
@@ -73,7 +87,6 @@ function TransactionModal({ setOpen, open }: Type) {
 
         Outcome("Payment failed", error.response.data.message, "red");
       }
-
     }
   };
 
@@ -129,18 +142,6 @@ const handleDeposit = async ({
   amount: number;
   userId: string;
 }) => {
-
-  try {
-    const response = await axios.post(
-      process.env.NEXT_PUBLIC_BACKEND_URI! + "/bank/outdeposit",
-      {
-        phoneNumber,
-        amount,
-        userId,
-      }
-    );
-
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URI);
   try {
     const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URI!, {
       phoneNumber,
@@ -153,24 +154,3 @@ const handleDeposit = async ({
     console.log(error);
   }
 };
-
-
-const handleWithDraw = async ({
-  phoneNumber,
-  userId,
-  amount,
-}: {
-  phoneNumber: number;
-  amount: number;
-  userId: string;
-}) => {
-  return axios.post(
-    process.env.NEXT_PUBLIC_BACKEND_URI! + "/bank/outwithdraw",
-    {
-      phoneNumber,
-      amount,
-      userId,
-    }
-  );
-};
-

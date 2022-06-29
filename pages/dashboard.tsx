@@ -22,7 +22,11 @@ import styled from "styled-components";
 
 import LoggedIn from "../layouts/LoggedIn";
 
-import { DataFetch } from "../components/DataFetch";
+import { DataFetch, Transactions } from "../components/DataFetch";
+import savingsService from "../src/graphql/services/savingsService";
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import transactionsService from "../src/graphql/services/transactionsService";
 const UpContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -35,8 +39,19 @@ const UpContainer = styled.div`
   }
 `;
 export default function Dashboard() {
-  const { myLoans, mySavings, totalLoans, totalSavings, transactions } =
-    DataFetch();
+  const [tx, setTx] = useState<Transactions[]>([]);
+  const userId = useSelector((state: RootState) => state.user.user._id);
+
+  let transactions;
+  transactions = tx.slice(0, 5);
+  useEffect(() => {
+    const getTx = async () => {
+      const TxRes = await transactionsService.getUserTransactions(userId);
+      setTx(TxRes.getUserTransactions);
+    };
+    getTx();
+  }, [userId]);
+  const { myLoans, mySavings, totalLoans, totalSavings } = DataFetch();
 
   return (
     <LoggedIn header={"dashboard"}>
@@ -94,9 +109,7 @@ export default function Dashboard() {
             </Button>
           </UpContainer>
           {transactions.map((transaction) => (
-            
             <Stack align="stretch" key={transaction._id}>
-              {console.log(transaction)}
               <Paper my={7} shadow="xl" radius="md" p="sm">
                 <Group position="apart">
                   <Text>{transaction.type}</Text>

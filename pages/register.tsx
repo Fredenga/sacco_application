@@ -3,11 +3,9 @@ import { useForm } from "@mantine/form";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Outcome } from "../components/Notifications";
 import userService from "../src/graphql/services/userService";
-import { loginUser } from "../state/userState";
 
 const AppContainer = styled.div`
   display: flex;
@@ -37,10 +35,6 @@ const Image = styled.img`
 `;
 
 const Register = () => {
-  const [email, setemail] = useState<string>("");
-  const [password, setpassword] = useState<string>("");
-  const dispatch = useDispatch();
-
   const [loading, SetLoading] = useState<boolean>(false);
   const router = useRouter();
   const handleRegister = async (values: typeof form.values) => {

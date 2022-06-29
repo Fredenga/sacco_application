@@ -15,7 +15,7 @@ export interface getUserTransactions_getUserTransactions {
   to: string;
   toId: string;
   status: string;
-  requestId: string;
+  _id: string;
   userId: string;
 }
 

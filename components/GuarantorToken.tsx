@@ -24,7 +24,7 @@ const GuarantorToken: React.FC<TokenProps> = ({ token }) => {
           Copy Your Guarantor Token
         </Text>
 
-        <Group align="flex-end">
+        <Group align="flex-start">
           <Text>{token}</Text>
         </Group>
       </Dialog>

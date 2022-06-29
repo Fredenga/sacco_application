@@ -8,10 +8,14 @@ export const CREATE_USER = gql`
         firstName
         lastName
         email
+
       }
       errors {
         error
         message
+
+        phoneNumber
+
       }
     }
   }

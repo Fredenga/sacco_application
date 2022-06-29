@@ -20,12 +20,18 @@ import { getSavingsByUserId_getSavingsByUserId } from "../src/graphql/savings/__
 import savingsService from "../src/graphql/services/savingsService";
 import { RootState } from "../state/store";
 
+export let TotalSavings: number = 0;
+
 export default function Savings() {
   const [opened, setOpened] = useState<boolean>(false);
   const [addSavings, setAddSavings] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const userId = useSelector((state: RootState) => state.user.user._id);
+
   const [load, setLoad] = useState<boolean>(false);
+
+  const [totSav, SetTotSav] = useState(0);
+
 
   const [amountAimed, setAmountAimed] = useState<number>(0);
   const [name, setName] = useState<string>("");
@@ -34,7 +40,7 @@ export default function Savings() {
   const [savings, setSavings] = useState<
     getSavingsByUserId_getSavingsByUserId[]
   >([]);
-
+  TotalSavings = totSav;
   const handleCreateSavingsAccount = async () => {
     setLoading(true);
     try {
@@ -56,15 +62,14 @@ export default function Savings() {
       const res = await savingsService.getSavingsByUserId(userId);
       const allSavings: getSavingsByUserId_getSavingsByUserId[] =
         res.data.getSavingsByUserId;
-      setSavings(allSavings);
+
+      setSavings(allSavings.filter((saving) => saving.name != "SACCO_SAVINGS"));
+      const resp = await savingsService.getTotalSavings();
+      SetTotSav(resp.data.getTotalSavings);
+
     };
     fetchSavings();
   }, [userId]);
-
-  const numbers = savings.map((saving) => saving.amountSaved);
-  const totalSavings =
-    numbers.length > 0 &&
-    numbers.reduce((accumulator, currentValue) => accumulator + currentValue);
 
   const AddToYourSavingAccount = async (savingsId: string, bankId: string) => {
     setLoading(true);
@@ -155,7 +160,7 @@ export default function Savings() {
       <Container>
         <Group position="apart">
           <Text color="green" my={25}>
-            Total Savings: KSH{totalSavings || 0}
+            Total Savings: KSH{totSav}
           </Text>
           <Button variant="light" color="teal" onClick={() => setOpened(true)}>
             New Savings Account

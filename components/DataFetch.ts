@@ -28,7 +28,9 @@ export interface Savings {
   amountLoanable: number;
 }
 
-interface Transactions {
+
+export interface Transactions {
+
   _id: string;
   type: string;
   amount: number;
@@ -43,42 +45,25 @@ interface Transactions {
 export const DataFetch = (size?: number) => {
   const [loans, setLoans] = useState<Loans[]>([]);
   const [savings, setSavings] = useState<Savings[]>([]);
-  const [tx, setTx] = useState<Transactions[]>([]);
-
-  const [users, setUsers] = useState<number>(0);
 
   const userId = useSelector((state: RootState) => state.user.user._id);
   useEffect(() => {
     const fetchData = async () => {
       const loanRes = await loansService.getAllLoansByUserId(userId);
       const savingRes = await savingsService.getSavingsByUserId(userId);
-      const TxRes = await transactionsService.getUserTransactions(userId);
-      setTx(TxRes.getUserTransactions);
+
       setLoans(loanRes.getAllLoansByUserId.loans),
         setSavings(savingRes.data.getSavingsByUserId);
-      const all = await userService.getUsersTotal();
-      setUsers(all.getUsersTotal);
     };
     fetchData();
   }, [userId]);
   const myLoans = loans.slice(1, loans.length);
-  const mySavings = savings;
-  let transactions;
-  transactions = size ? tx.slice(0, size) : tx.slice(0, 5);
-  let totalSavings, totalLoans;
-  if (savings.length > 0 && loans.length > 0) {
-    totalSavings = savings
-      .map((saving) => saving.amountSaved)
-      .reduce((x, y) => x + y);
-    totalLoans = loans.map((loan) => loan.amountPaid).reduce((x, y) => x + y);
-  }
+
+  const mySavings = savings.slice(1, savings.length);
+
+
   return {
     mySavings,
     myLoans,
-    totalSavings,
-    totalLoans,
-    transactions,
-    tx,
-    users,
   };
 };

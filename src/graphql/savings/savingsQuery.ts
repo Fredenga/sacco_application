@@ -15,3 +15,9 @@ export const GET_SAVINGS_BY_USERID = gql`
     }
   }
 `;
+
+export const GET_TOTAL_SAVINGS = gql`
+  query getTotalSavings {
+    getTotalSavings
+  }
+`;

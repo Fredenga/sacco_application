@@ -29,3 +29,9 @@ export const GET_ALL_LOANS_BY_USERID = gql`
     }
   }
 `;
+
+export const GET_TOTAL_LOANS = gql`
+  query getTotalLoans {
+    getTotalLoans
+  }
+`;

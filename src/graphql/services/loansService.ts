@@ -3,6 +3,7 @@ import { CREATE_GUARANTOR, INITIALIZE_LOAN } from "../loans/loansMutation";
 import {
   GET_ALL_LOANS_BY_USERID,
   GET_ALL_LOAN_TYPES,
+  GET_TOTAL_LOANS,
 } from "../loans/loansQuery";
 import {
   CreateGuarantorDto,
@@ -51,6 +52,17 @@ class LoansService {
         mutation: INITIALIZE_LOAN,
         variables: { input: createLoan },
       });
+      return { data, status: true };
+    } catch (error) {
+      return { error, status: false };
+    }
+  }
+  async getTotalLoans() {
+    try {
+      const { data } = await apolloClient.query({
+        query: GET_TOTAL_LOANS,
+      });
+
       return { data, status: true };
     } catch (error) {
       return { error, status: false };

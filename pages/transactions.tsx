@@ -9,13 +9,13 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { DataFetch } from "../components/DataFetch";
+import { DataFetch, Transactions } from "../components/DataFetch";
 import TransactionModal from "../components/TransactionModal";
 import LoggedIn from "../layouts/LoggedIn";
 import transactionsService from "../src/graphql/services/transactionsService";
 import { RootState } from "../state/store";
 
-export default function Transactions() {
+export default function Transaction() {
   const userId = useSelector((state: RootState) => state.user.user._id);
   const [balance, setBalance] = useState<number>();
   const [more, SetMore] = useState<number>();
@@ -27,8 +27,18 @@ export default function Transactions() {
   const handleTransaction = (type: string) => {
     setOpen({ status: true, type });
   };
+  const [tx, setTx] = useState<Transactions[]>([]);
+  let transactions;
+  transactions = more ? tx.slice(0, more) : tx.slice(0, 5);
+  useEffect(() => {
+    const loadTx = async () => {
+      const TxRes = await transactionsService.getUserTransactions(userId);
+      setTx(TxRes.getUserTransactions);
+    };
+    loadTx();
+  }, [userId]);
 
-  const { transactions, tx } = DataFetch(more);
+  // const { transactions, tx } = DataFetch(more);
   useEffect(() => {
     const fetchTransactions = async () => {
       const data = await transactionsService.getEscrow(userId);
@@ -40,9 +50,9 @@ export default function Transactions() {
     <LoggedIn header={"transactions"}>
       <Container>
 
+
         {<TransactionModal open={open} setOpen={setOpen} />}
 
-        { <TransactionModal  open={open} setOpen={setOpen} />}
 
         <Center>
           <Text color="green" my={25}>

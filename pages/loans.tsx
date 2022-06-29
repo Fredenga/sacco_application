@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import GuarantorToken from "../components/GuarantorToken";
 import { Outcome } from "../components/Notifications";
 import LoggedIn from "../layouts/LoggedIn";
 import { getAllLoansByUserId_getAllLoansByUserId_loans } from "../src/graphql/loans/__generated__/getAllLoansByUserId";
@@ -21,9 +22,12 @@ import { getAllLoanTypes_getAllLoanTypes } from "../src/graphql/loans/__generate
 import loansService from "../src/graphql/services/loansService";
 import { RootState } from "../state/store";
 
+export let TotalLoans: number = 0;
+
 export default function Loans() {
   const [loans, setLoans] = useState<getAllLoanTypes_getAllLoanTypes[]>([]);
   const userId = useSelector((state: RootState) => state.user.user._id);
+  const [total, setTotal] = useState<number>(0);
 
   const [userLoans, setUserLoans] = useState<
     getAllLoansByUserId_getAllLoansByUserId_loans[]
@@ -34,10 +38,14 @@ export default function Loans() {
       const res = await loansService.getAllLoansByUserId(userId);
       res && setUserLoans(res.getAllLoansByUserId.loans);
       setLoans(data.getAllLoanTypes);
+
+      const resp = await loansService.getTotalLoans();
+      setTotal(resp.data.getTotalLoans);
     };
     fetchLoans();
   }, [loans, userId]);
 
+  TotalLoans = total;
   const [opened, setOpened] = useState(false);
   const [guarantor, setGuarantor] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,10 +56,13 @@ export default function Loans() {
   const loan = loans.find((loan) => loan.name === loanType);
   const calculateAmountToPay = () => {
     if (loan) {
-      return amount * (loan?.interestRate / 100) * loan.repayPeriod + amount;
+      return Math.ceil(
+        amount * (loan?.interestRate / 100) * loan.repayPeriod + amount
+      );
     }
     return null;
   };
+  const [myToken, setMyToken] = useState("");
   const beAGuarantor = async () => {
     setLoading(true);
     const res = await loansService.createGuarantor({
@@ -60,7 +71,7 @@ export default function Loans() {
     });
     console.log(res.data);
     if (res.status) {
-      console.log(res);
+      setMyToken(res.data.createGuarantor.token);
     } else {
       Outcome("Application Unsuccessful", `${res.error}`, "red");
     }
@@ -88,9 +99,32 @@ export default function Loans() {
     setLoading(false);
     setOpened(false);
   };
+  return (
+    <LoggedIn header={"loan"}>
+      <Modal
+        opened={guarantor}
+        onClose={() => setGuarantor(false)}
+        title="Be a Guarantor"
+        centered
+      >
+        <Stack>
+          <TextInput
+            label="Amount"
+            placeholder="Amount (KSH)"
+            required
+            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
+          />
+          <Button
+            loading={loading}
+            onClick={beAGuarantor}
+            variant="light"
+            color="green"
+          >
+            Apply for Guarantorship
+          </Button>
+        </Stack>
+      </Modal>
 
-  const LoanApplication = () => {
-    return (
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
@@ -130,39 +164,11 @@ export default function Loans() {
           </Button>
         </Stack>
       </Modal>
-    );
-  };
-
-  return (
-    <LoggedIn header={"loan"}>
-      <Modal
-        opened={guarantor}
-        onClose={() => setGuarantor(false)}
-        title="Be a Guarantor"
-        centered
-      >
-        <Stack>
-          <TextInput
-            label="Amount"
-            placeholder="Amount (KSH)"
-            required
-            onChange={(e) => setGuarantorAmount(parseInt(e.target.value))}
-          />
-          <Button
-            loading={loading}
-            onClick={beAGuarantor}
-            variant="light"
-            color="green"
-          >
-            Apply for Guarantorship
-          </Button>
-        </Stack>
-      </Modal>
-
-      <LoanApplication />
       <Space />
       <Container>
-        <Text color="green">Total Loans: {userLoans.length}</Text>
+
+        <Text color="green">Total Loans: Ksh {total}</Text>
+
 
         <Center>
           <Container my={10}>
@@ -190,6 +196,7 @@ export default function Loans() {
           <Text my={10} size="xl" color="green">
             Current Loans
           </Text>
+          <Container>{token && <GuarantorToken token={token} />}</Container>
         </Center>
         {userLoans.length > 0 ? (
           <Grid grow>

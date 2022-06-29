@@ -56,7 +56,9 @@ export default function Loans() {
   const loan = loans.find((loan) => loan.name === loanType);
   const calculateAmountToPay = () => {
     if (loan) {
-      return amount * (loan?.interestRate / 100) * loan.repayPeriod + amount;
+      return Math.ceil(
+        amount * (loan?.interestRate / 100) * loan.repayPeriod + amount
+      );
     }
     return null;
   };
